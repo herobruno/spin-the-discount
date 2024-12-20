@@ -5,9 +5,19 @@ import "./Roulette.css";
 
 export const Roulette = () => {
   const [isSpinning, setIsSpinning] = useState(false);
-  const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
-  const [minNumber] = useState(1);
-  const [maxNumber] = useState(20);
+  const [selectedCoupon, setSelectedCoupon] = useState<string | null>(null);
+
+  // Array de cupons de desconto
+  const coupons = [
+    "10% OFF",
+    "15% OFF",
+    "20% OFF",
+    "25% OFF",
+    "30% OFF",
+    "40% OFF",
+    "50% OFF",
+    "FRETE GRÁTIS",
+  ];
 
   const handleSpin = () => {
     if (isSpinning) return;
@@ -19,79 +29,69 @@ export const Roulette = () => {
     const spinDuration = 4000 + Math.random() * 2000;
     
     setTimeout(() => {
-      const newNumber = Math.floor(Math.random() * (maxNumber - minNumber + 1)) + minNumber;
-      setSelectedNumber(newNumber);
+      const randomIndex = Math.floor(Math.random() * coupons.length);
+      const newCoupon = coupons[randomIndex];
+      setSelectedCoupon(newCoupon);
       setIsSpinning(false);
       
       const winAudio = new Audio("/win.mp3");
       winAudio.play();
       
-      toast.success(`Número sorteado: ${newNumber}`, {
-        description: "Parabéns ao ganhador!",
+      toast.success(`Cupom sorteado: ${newCoupon}`, {
+        description: "Parabéns! Use seu cupom de desconto agora!",
       });
     }, spinDuration);
   };
 
-  // Generate numbers array
-  const numbers = Array.from(
-    { length: maxNumber - minNumber + 1 },
-    (_, i) => i + minNumber
-  );
-
   return (
     <div className="roulette-container">
       <div className="roulette-content">
-        <h1 className="roulette-title">Roleta de Sorteios</h1>
+        <h1 className="roulette-title">Roleta de Cupons</h1>
         <p className="roulette-subtitle">
-          Sorteie números de cupons de desconto
+          Gire e ganhe descontos exclusivos!
         </p>
 
         <div className="roulette-wheel-container">
-          {/* Seta indicadora */}
           <div className="roulette-arrow" />
 
-          {/* Container da roleta */}
           <div className="roulette-wheel">
-            {/* Faixa de números que gira */}
             <motion.div
               className="roulette-numbers"
               animate={{
-                x: isSpinning ? [-100 * numbers.length, 0] : 0,
+                x: isSpinning ? [-100 * coupons.length, 0] : 0,
               }}
               transition={{
                 duration: isSpinning ? 5 : 0,
                 ease: "easeOut",
               }}
               style={{
-                width: `${numbers.length * 100}px`,
+                width: `${coupons.length * 100}px`,
               }}
             >
-              {[...numbers, ...numbers, ...numbers].map((number, index) => (
+              {[...coupons, ...coupons, ...coupons].map((coupon, index) => (
                 <div
-                  key={`${number}-${index}`}
+                  key={`${coupon}-${index}`}
                   className="roulette-number"
                 >
-                  <span>{number}</span>
+                  <span>{coupon}</span>
                 </div>
               ))}
             </motion.div>
 
-            {/* Gradientes */}
             <div className="roulette-gradient-left" />
             <div className="roulette-gradient-right" />
           </div>
 
-          {/* Número selecionado */}
           <div className="roulette-selected">
             <AnimatePresence mode="wait">
               <motion.div
-                key={selectedNumber || "placeholder"}
+                key={selectedCoupon || "placeholder"}
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.5, opacity: 0 }}
                 className="selected-number"
               >
-                {isSpinning ? "..." : selectedNumber || "?"}
+                {isSpinning ? "..." : selectedCoupon || "?"}
               </motion.div>
             </AnimatePresence>
           </div>
@@ -104,7 +104,7 @@ export const Roulette = () => {
           disabled={isSpinning}
           className="spin-button"
         >
-          {isSpinning ? "Sorteando..." : "Sortear Número"}
+          {isSpinning ? "Sorteando..." : "Girar Roleta"}
         </motion.button>
       </div>
     </div>
