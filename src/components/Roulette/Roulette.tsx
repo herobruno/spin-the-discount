@@ -46,8 +46,8 @@ export const Roulette = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 animate-scale-in">
+        <div className="space-y-8">
+          <div className="animate-scale-in">
             <RouletteWheel
               isSpinning={isSpinning}
               selectedNumber={selectedNumber}
@@ -56,7 +56,7 @@ export const Roulette = () => {
             />
           </div>
           
-          <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <RouletteControls
               isSpinning={isSpinning}
               onSpin={handleSpin}
