@@ -9,7 +9,7 @@ export const Roulette = () => {
   const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
   const [history, setHistory] = useState<number[]>([]);
   const [minNumber, setMinNumber] = useState(1);
-  const [maxNumber, setMaxNumber] = useState(100);
+  const [maxNumber, setMaxNumber] = useState(20);
 
   const handleSpin = () => {
     if (isSpinning) return;
@@ -38,14 +38,16 @@ export const Roulette = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-roulette-dark to-black p-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8 animate-fade-in">
           <h1 className="text-4xl font-bold text-white mb-2">Roleta de Sorteios</h1>
-          <p className="text-roulette-light opacity-80">Sorteie números de cupons de desconto</p>
+          <p className="text-roulette-light opacity-80">
+            Sorteie números de cupons de desconto
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="animate-scale-in">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 animate-scale-in">
             <RouletteWheel
               isSpinning={isSpinning}
               selectedNumber={selectedNumber}

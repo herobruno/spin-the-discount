@@ -14,14 +14,22 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
   minNumber,
   maxNumber,
 }) => {
+  // Gera um array com todos os números possíveis
+  const numbers = Array.from(
+    { length: maxNumber - minNumber + 1 },
+    (_, i) => i + minNumber
+  );
+
   return (
-    <div className="relative aspect-square">
-      {/* Glass morphism background */}
-      <div className="absolute inset-0 bg-white/10 backdrop-blur-lg rounded-full border border-white/20" />
-      
-      {/* Spinning wheel */}
+    <div className="relative aspect-square max-w-[500px] mx-auto">
+      {/* Ponteiro fixo */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10">
+        <div className="w-0 h-0 border-l-[20px] border-l-transparent border-r-[20px] border-r-transparent border-b-[40px] border-b-red-500" />
+      </div>
+
+      {/* Roda da roleta */}
       <motion.div
-        className="absolute inset-0 rounded-full border-4 border-roulette-primary"
+        className="relative w-full h-full rounded-full border-8 border-roulette-primary bg-gradient-to-br from-roulette-dark to-black shadow-xl"
         animate={{
           rotate: isSpinning ? 360 * 10 : 0,
         }}
@@ -30,37 +38,49 @@ export const RouletteWheel: React.FC<RouletteWheelProps> = ({
           ease: "easeOut",
         }}
       >
-        {/* Wheel markers */}
-        {Array.from({ length: 12 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-8 bg-roulette-light/50"
-            style={{
-              left: "50%",
-              top: "0",
-              transformOrigin: "bottom center",
-              transform: `translateX(-50%) rotate(${i * 30}deg)`,
-            }}
-          />
-        ))}
+        {numbers.map((number, index) => {
+          const angle = (360 / numbers.length) * index;
+          const radius = 42; // Porcentagem do raio onde os números serão posicionados
+
+          return (
+            <div
+              key={number}
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-white font-bold text-xl"
+              style={{
+                transform: `
+                  translate(-50%, -50%)
+                  rotate(${angle}deg)
+                  translateY(-${radius}%)
+                  rotate(-${angle}deg)
+                `,
+              }}
+            >
+              {number}
+            </div>
+          );
+        })}
+
+        {/* Linhas divisórias */}
+        {numbers.map((_, index) => {
+          const angle = (360 / numbers.length) * index;
+          return (
+            <div
+              key={`line-${index}`}
+              className="absolute top-1/2 left-1/2 w-1/2 h-0.5 bg-roulette-primary/30"
+              style={{
+                transform: `rotate(${angle}deg)`,
+                transformOrigin: "0 50%",
+              }}
+            />
+          );
+        })}
       </motion.div>
 
-      {/* Center display */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <motion.div
-          className="bg-roulette-primary/90 backdrop-blur-sm rounded-2xl p-8 shadow-lg"
-          animate={{
-            scale: isSpinning ? [1, 1.1, 1] : 1,
-          }}
-          transition={{
-            duration: 0.3,
-            repeat: isSpinning ? Infinity : 0,
-          }}
-        >
-          <span className="text-4xl font-bold text-white">
-            {isSpinning ? "..." : selectedNumber || "?"}
-          </span>
-        </motion.div>
+      {/* Círculo central */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-roulette-primary flex items-center justify-center">
+        <span className="text-white font-bold">
+          {isSpinning ? "..." : selectedNumber || "?"}
+        </span>
       </div>
     </div>
   );
