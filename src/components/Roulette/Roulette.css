@@ -30,6 +30,7 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .roulette-arrow {
@@ -64,6 +65,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  will-change: transform;
 }
 
 .roulette-number {
@@ -86,6 +88,7 @@
   text-align: center;
   line-height: 1.2;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  white-space: nowrap;
 }
 
 .roulette-gradient-left {
@@ -94,6 +97,8 @@
   left: 0;
   width: 8rem;
   background: linear-gradient(to right, #1A1F2C, transparent);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .roulette-gradient-right {
@@ -102,6 +107,8 @@
   right: 0;
   width: 8rem;
   background: linear-gradient(to left, #1A1F2C, transparent);
+  pointer-events: none;
+  z-index: 2;
 }
 
 .roulette-selected {
@@ -115,6 +122,7 @@
   align-items: center;
   justify-content: center;
   pointer-events: none;
+  z-index: 1;
 }
 
 .selected-number {

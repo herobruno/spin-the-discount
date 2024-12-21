@@ -8,7 +8,6 @@ export const Roulette = () => {
   const [selectedCoupon, setSelectedCoupon] = useState<string | null>(null);
   const [spinPosition, setSpinPosition] = useState(0);
 
-  // Array de cupons de desconto
   const coupons = [
     "10% OFF",
     "15% OFF",
@@ -27,17 +26,14 @@ export const Roulette = () => {
     const audio = new Audio("/spin.mp3");
     audio.play();
 
-    // Seleciona um cupom aleatório
     const randomIndex = Math.floor(Math.random() * coupons.length);
     const selectedCoupon = coupons[randomIndex];
     
-    // Calcula quantas rotações completas queremos (3 a 5)
     const fullRotations = 3 + Math.floor(Math.random() * 2);
-    // Calcula a posição final considerando as rotações completas
-    const finalPosition = -(fullRotations * (coupons.length * 100) + (randomIndex * 100));
+    const finalPosition = -(fullRotations * 800 + (randomIndex * 100));
     
     setSpinPosition(finalPosition);
-    setSelectedCoupon(null); // Limpa o cupom selecionado durante a animação
+    setSelectedCoupon(null);
     
     const spinDuration = 4000 + Math.random() * 2000;
     
@@ -77,9 +73,6 @@ export const Roulette = () => {
               transition={{
                 duration: isSpinning ? 5 : 0,
                 ease: "easeOut",
-              }}
-              style={{
-                width: `${coupons.length * 100}px`,
               }}
             >
               {[...coupons, ...coupons, ...coupons].map((coupon, index) => (
