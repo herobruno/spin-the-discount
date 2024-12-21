@@ -31,15 +31,19 @@ export const Roulette = () => {
     const randomIndex = Math.floor(Math.random() * coupons.length);
     const selectedCoupon = coupons[randomIndex];
     
-    // Calcula a posição final para que o cupom selecionado fique no centro
-    const finalPosition = -(randomIndex * 100 + coupons.length * 100);
+    // Calcula quantas rotações completas queremos (3 a 5)
+    const fullRotations = 3 + Math.floor(Math.random() * 2);
+    // Calcula a posição final considerando as rotações completas
+    const finalPosition = -(fullRotations * (coupons.length * 100) + (randomIndex * 100));
+    
     setSpinPosition(finalPosition);
+    setSelectedCoupon(null); // Limpa o cupom selecionado durante a animação
     
     const spinDuration = 4000 + Math.random() * 2000;
     
     setTimeout(() => {
-      setSelectedCoupon(selectedCoupon);
       setIsSpinning(false);
+      setSelectedCoupon(selectedCoupon);
       
       const winAudio = new Audio("/win.mp3");
       winAudio.play();
@@ -65,7 +69,10 @@ export const Roulette = () => {
             <motion.div
               className="roulette-numbers"
               animate={{
-                x: isSpinning ? spinPosition : 0,
+                x: spinPosition,
+              }}
+              initial={{
+                x: 0,
               }}
               transition={{
                 duration: isSpinning ? 5 : 0,
