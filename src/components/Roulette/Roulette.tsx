@@ -6,6 +6,7 @@ import "./Roulette.css";
 export const Roulette = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState<string | null>(null);
+  const [spinPosition, setSpinPosition] = useState(0);
 
   // Array de cupons de desconto
   const coupons = [
@@ -26,11 +27,15 @@ export const Roulette = () => {
     const audio = new Audio("/spin.mp3");
     audio.play();
 
-    const spinDuration = 4000 + Math.random() * 2000;
-    
     // Seleciona um cupom aleatório
     const randomIndex = Math.floor(Math.random() * coupons.length);
     const selectedCoupon = coupons[randomIndex];
+    
+    // Calcula a posição final para que o cupom selecionado fique no centro
+    const finalPosition = -(randomIndex * 100 + coupons.length * 100);
+    setSpinPosition(finalPosition);
+    
+    const spinDuration = 4000 + Math.random() * 2000;
     
     setTimeout(() => {
       setSelectedCoupon(selectedCoupon);
@@ -60,7 +65,7 @@ export const Roulette = () => {
             <motion.div
               className="roulette-numbers"
               animate={{
-                x: isSpinning ? [-100 * coupons.length, 0] : 0,
+                x: isSpinning ? spinPosition : 0,
               }}
               transition={{
                 duration: isSpinning ? 5 : 0,
