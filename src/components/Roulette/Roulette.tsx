@@ -28,17 +28,19 @@ export const Roulette = () => {
 
     const spinDuration = 4000 + Math.random() * 2000;
     
+    // Seleciona um cupom aleatório
+    const randomIndex = Math.floor(Math.random() * coupons.length);
+    const selectedCoupon = coupons[randomIndex];
+    
     setTimeout(() => {
-      const randomIndex = Math.floor(Math.random() * coupons.length);
-      const newCoupon = coupons[randomIndex];
-      setSelectedCoupon(newCoupon);
+      setSelectedCoupon(selectedCoupon);
       setIsSpinning(false);
       
       const winAudio = new Audio("/win.mp3");
       winAudio.play();
       
-      toast.success(`Cupom sorteado: ${newCoupon}`, {
-        description: "Parabéns! Use seu cupom de desconto agora!",
+      toast.success(`Parabéns! Você ganhou: ${selectedCoupon}`, {
+        description: "Use seu cupom de desconto agora!",
       });
     }, spinDuration);
   };
