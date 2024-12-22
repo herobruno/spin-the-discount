@@ -30,7 +30,7 @@ export const Roulette = () => {
     const selectedCoupon = coupons[randomIndex];
     
     const fullRotations = 3 + Math.floor(Math.random() * 2);
-    const finalPosition = -(fullRotations * 800 + (randomIndex * 100));
+    const finalPosition = -(fullRotations * (coupons.length * 100) + (randomIndex * 100));
     
     setSpinPosition(finalPosition);
     setSelectedCoupon(null);
@@ -73,6 +73,9 @@ export const Roulette = () => {
               transition={{
                 duration: isSpinning ? 5 : 0,
                 ease: "easeOut",
+              }}
+              style={{
+                width: `${coupons.length * 100 * 3}px`,
               }}
             >
               {[...coupons, ...coupons, ...coupons].map((coupon, index) => (
