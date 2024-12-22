@@ -19,9 +19,9 @@ export const Roulette = () => {
     "FRETE GRÁTIS",
   ];
 
-  // Número de vezes que o array de prêmios será repetido
-  const repetitions = 10;
-  const itemWidth = 160; // Largura de cada item em pixels
+  // Aumentamos significativamente o número de repetições para garantir um loop contínuo
+  const repetitions = 50;
+  const itemWidth = 160;
   const stripWidth = prizes.length * itemWidth * repetitions;
 
   const spin = async () => {
@@ -30,36 +30,27 @@ export const Roulette = () => {
     setIsSpinning(true);
     setSelectedPrize(null);
 
-    // Tocar som de início
     const spinSound = new Audio("/spin.mp3");
     spinSound.play();
 
-    // Selecionar prêmio aleatório
     const randomIndex = Math.floor(Math.random() * prizes.length);
     const prize = prizes[randomIndex];
 
-    // Calcular posição final
-    const baseRotations = 3; // Número mínimo de rotações completas
-    const additionalRotations = Math.random() * 2; // Rotações adicionais aleatórias
-    const totalRotations = baseRotations + additionalRotations;
-    
-    // Posição final considerando as rotações e o item selecionado
-    const finalPosition = -(totalRotations * stripWidth + (randomIndex * itemWidth));
+    // Ajustamos a lógica de rotação para garantir que sempre haja números visíveis
+    const baseRotations = Math.floor(Math.random() * 2) + 3; // Entre 3 e 4 rotações completas
+    const finalPosition = -(baseRotations * prizes.length * itemWidth + (randomIndex * itemWidth));
 
-    // Animar a roleta
     await controls.start({
-      x: finalPosition,
+      x: [0, finalPosition], // Começamos do 0 para garantir um loop suave
       transition: {
-        duration: 4,
-        ease: [0.25, 0.1, 0.25, 1], // Curva de easing personalizada
+        duration: 5,
+        ease: [0.25, 0.1, 0.25, 1],
       },
     });
 
-    // Tocar som de vitória
     const winSound = new Audio("/win.mp3");
     winSound.play();
 
-    // Atualizar estado e mostrar toast
     setIsSpinning(false);
     setSelectedPrize(prize);
     
@@ -68,7 +59,7 @@ export const Roulette = () => {
     });
   };
 
-  // Resetar posição quando necessário
+  // Resetar a posição quando a roleta parar
   useEffect(() => {
     if (!isSpinning) {
       controls.set({ x: 0 });

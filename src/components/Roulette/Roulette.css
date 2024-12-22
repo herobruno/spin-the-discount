@@ -62,6 +62,7 @@
   display: flex;
   align-items: center;
   will-change: transform;
+  transform: translateX(0);
 }
 
 .roulette-item {
@@ -74,6 +75,7 @@
   border-right: 2px solid rgba(155, 135, 245, 0.2);
   background: linear-gradient(180deg, rgba(155, 135, 245, 0.05) 0%, rgba(155, 135, 245, 0.1) 100%);
   padding: 1rem;
+  transition: all 0.3s ease;
 }
 
 .roulette-item span {
