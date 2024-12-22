@@ -13,16 +13,15 @@
   font-size: 2.5rem;
   font-weight: bold;
   color: white;
-  margin-bottom: 0.5rem;
   text-align: center;
   animation: fadeIn 0.3s ease-out;
 }
 
 .roulette-subtitle {
   color: #D6BCFA;
-  opacity: 0.8;
   text-align: center;
   margin-bottom: 2rem;
+  opacity: 0.8;
 }
 
 .roulette-wheel-container {
@@ -30,107 +29,80 @@
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
-  overflow: hidden;
+  padding-top: 2rem;
 }
 
-.roulette-arrow {
+.roulette-pointer {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-top: 40px solid #ff0000;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 30px solid #9b87f5;
   z-index: 10;
 }
 
-.roulette-wheel {
+.roulette-display {
   position: relative;
-  height: 200px;
-  margin-top: 40px;
-  background: linear-gradient(102.3deg, rgba(147,39,143,0.8) 5.9%, rgba(234,172,232,0.8) 64%, rgba(246,219,245,0.8) 89%);
-  border-radius: 0.75rem;
-  border: 4px solid #9b87f5;
+  height: 120px;
+  background: rgba(155, 135, 245, 0.1);
+  border: 3px solid #9b87f5;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
 }
 
-.roulette-numbers {
+.roulette-strip {
   position: absolute;
-  top: 0;
-  left: 0;
   height: 100%;
   display: flex;
   align-items: center;
   will-change: transform;
 }
 
-.roulette-number {
+.roulette-item {
   flex-shrink: 0;
-  width: 100px;
+  width: 160px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-right: 2px solid rgba(155, 135, 245, 0.3);
-  padding: 0 1rem;
-  background: linear-gradient(180deg, rgba(155, 135, 245, 0.1) 0%, rgba(155, 135, 245, 0.2) 100%);
-  backdrop-filter: blur(4px);
+  border-right: 2px solid rgba(155, 135, 245, 0.2);
+  background: linear-gradient(180deg, rgba(155, 135, 245, 0.05) 0%, rgba(155, 135, 245, 0.1) 100%);
+  padding: 1rem;
 }
 
-.roulette-number span {
+.roulette-item span {
   font-size: 1.5rem;
   font-weight: bold;
   color: white;
   text-align: center;
-  line-height: 1.2;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-.roulette-gradient-left {
+.roulette-overlay-left,
+.roulette-overlay-right {
   position: absolute;
-  inset-y: 0;
-  left: 0;
-  width: 8rem;
-  background: linear-gradient(to right, #1A1F2C, transparent);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.roulette-gradient-right {
-  position: absolute;
-  inset-y: 0;
-  right: 0;
-  width: 8rem;
-  background: linear-gradient(to left, #1A1F2C, transparent);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.roulette-selected {
-  position: absolute;
-  top: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  bottom: 0;
   width: 100px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
-.selected-number {
-  font-size: 2rem;
-  font-weight: bold;
-  color: white;
-  opacity: 0.5;
-  text-align: center;
-  line-height: 1.2;
+.roulette-overlay-left {
+  left: 0;
+  background: linear-gradient(to right, #1A1F2C, transparent);
+}
+
+.roulette-overlay-right {
+  right: 0;
+  background: linear-gradient(to left, #1A1F2C, transparent);
 }
 
 .spin-button {
@@ -138,31 +110,39 @@
   width: 100%;
   max-width: 300px;
   margin: 2rem auto 0;
-  padding: 1.5rem;
-  font-size: 1.125rem;
+  padding: 1rem 2rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: white;
-  background-color: #9b87f5;
+  background: linear-gradient(to right, #9b87f5, #7E69AB);
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
-.spin-button:hover {
-  background-color: #7E69AB;
+.spin-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(155, 135, 245, 0.3);
 }
 
 .spin-button:disabled {
-  opacity: 0.5;
+  opacity: 0.7;
   cursor: not-allowed;
 }
 
+.result-display {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #9b87f5;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
   to {
     opacity: 1;
     transform: translateY(0);

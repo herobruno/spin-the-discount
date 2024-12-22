@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import { motion, useAnimation } from "framer-motion";
 import { toast } from "sonner";
 import "./Roulette.css";
 
 export const Roulette = () => {
   const [isSpinning, setIsSpinning] = useState(false);
-  const [selectedCoupon, setSelectedCoupon] = useState<string | null>(null);
-  const [spinPosition, setSpinPosition] = useState(0);
+  const [selectedPrize, setSelectedPrize] = useState<string | null>(null);
+  const controls = useAnimation();
 
-  const coupons = [
+  const prizes = [
     "10% OFF",
     "15% OFF",
     "20% OFF",
@@ -19,37 +19,61 @@ export const Roulette = () => {
     "FRETE GRÁTIS",
   ];
 
-  const handleSpin = () => {
-    if (isSpinning) return;
-    
-    setIsSpinning(true);
-    const audio = new Audio("/spin.mp3");
-    audio.play();
+  // Número de vezes que o array de prêmios será repetido
+  const repetitions = 10;
+  const itemWidth = 160; // Largura de cada item em pixels
+  const stripWidth = prizes.length * itemWidth * repetitions;
 
-    const randomIndex = Math.floor(Math.random() * coupons.length);
-    const selectedCoupon = coupons[randomIndex];
+  const spin = async () => {
+    if (isSpinning) return;
+
+    setIsSpinning(true);
+    setSelectedPrize(null);
+
+    // Tocar som de início
+    const spinSound = new Audio("/spin.mp3");
+    spinSound.play();
+
+    // Selecionar prêmio aleatório
+    const randomIndex = Math.floor(Math.random() * prizes.length);
+    const prize = prizes[randomIndex];
+
+    // Calcular posição final
+    const baseRotations = 3; // Número mínimo de rotações completas
+    const additionalRotations = Math.random() * 2; // Rotações adicionais aleatórias
+    const totalRotations = baseRotations + additionalRotations;
     
-    // Calcular a posição final considerando rotações completas
-    const fullRotations = 5 + Math.floor(Math.random() * 3); // Aumentado para mais rotações
-    const finalPosition = -(fullRotations * (coupons.length * 100) + (randomIndex * 100));
+    // Posição final considerando as rotações e o item selecionado
+    const finalPosition = -(totalRotations * stripWidth + (randomIndex * itemWidth));
+
+    // Animar a roleta
+    await controls.start({
+      x: finalPosition,
+      transition: {
+        duration: 4,
+        ease: [0.25, 0.1, 0.25, 1], // Curva de easing personalizada
+      },
+    });
+
+    // Tocar som de vitória
+    const winSound = new Audio("/win.mp3");
+    winSound.play();
+
+    // Atualizar estado e mostrar toast
+    setIsSpinning(false);
+    setSelectedPrize(prize);
     
-    setSpinPosition(finalPosition);
-    setSelectedCoupon(null);
-    
-    const spinDuration = 4000 + Math.random() * 2000;
-    
-    setTimeout(() => {
-      setIsSpinning(false);
-      setSelectedCoupon(selectedCoupon);
-      
-      const winAudio = new Audio("/win.mp3");
-      winAudio.play();
-      
-      toast.success(`Parabéns! Você ganhou: ${selectedCoupon}`, {
-        description: "Use seu cupom de desconto agora!",
-      });
-    }, spinDuration);
+    toast.success(`Parabéns! Você ganhou: ${prize}`, {
+      description: "Use seu cupom de desconto agora!",
+    });
   };
+
+  // Resetar posição quando necessário
+  useEffect(() => {
+    if (!isSpinning) {
+      controls.set({ x: 0 });
+    }
+  }, [isSpinning, controls]);
 
   return (
     <div className="roulette-container">
@@ -60,65 +84,49 @@ export const Roulette = () => {
         </p>
 
         <div className="roulette-wheel-container">
-          <div className="roulette-arrow" />
-
-          <div className="roulette-wheel">
+          <div className="roulette-pointer" />
+          
+          <div className="roulette-display">
             <motion.div
-              className="roulette-numbers"
-              animate={{
-                x: spinPosition % (coupons.length * 100), // Garante que a posição seja cíclica
-              }}
-              initial={{
-                x: 0,
-              }}
-              transition={{
-                duration: isSpinning ? 5 : 0,
-                ease: "easeOut",
-              }}
+              className="roulette-strip"
+              animate={controls}
               style={{
-                width: `${coupons.length * 100 * 5}px`, // Aumentado para mais repetições
+                width: stripWidth,
               }}
             >
-              {[...Array(5)].flatMap((_, i) => // Repetir o array 5 vezes
-                coupons.map((coupon, index) => (
+              {Array(repetitions)
+                .fill(prizes)
+                .flat()
+                .map((prize, index) => (
                   <div
-                    key={`${coupon}-${i}-${index}`}
-                    className="roulette-number"
+                    key={`${prize}-${index}`}
+                    className="roulette-item"
                   >
-                    <span>{coupon}</span>
+                    <span>{prize}</span>
                   </div>
-                ))
-              )}
+                ))}
             </motion.div>
 
-            <div className="roulette-gradient-left" />
-            <div className="roulette-gradient-right" />
-          </div>
-
-          <div className="roulette-selected">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedCoupon || "placeholder"}
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.5, opacity: 0 }}
-                className="selected-number"
-              >
-                {isSpinning ? "..." : selectedCoupon || "?"}
-              </motion.div>
-            </AnimatePresence>
+            <div className="roulette-overlay-left" />
+            <div className="roulette-overlay-right" />
           </div>
         </div>
 
         <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={handleSpin}
-          disabled={isSpinning}
           className="spin-button"
+          onClick={spin}
+          disabled={isSpinning}
+          whileHover={{ scale: isSpinning ? 1 : 1.02 }}
+          whileTap={{ scale: isSpinning ? 1 : 0.98 }}
         >
-          {isSpinning ? "Sorteando..." : "Girar Roleta"}
+          {isSpinning ? "Girando..." : "Girar Roleta"}
         </motion.button>
+
+        {selectedPrize && (
+          <div className="result-display">
+            {selectedPrize}
+          </div>
+        )}
       </div>
     </div>
   );
