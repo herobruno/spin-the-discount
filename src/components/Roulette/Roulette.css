@@ -50,8 +50,7 @@
   position: relative;
   height: 200px;
   margin-top: 40px;
-  background: linear-gradient(102.3deg, rgba(147,39,143,0.8) 5.9%, rgba(234,172,232,0.8) 64%, rgba(246,219,245,0.8) 89%),
-              url('/placeholder.svg') center/cover repeat-x;
+  background: linear-gradient(102.3deg, rgba(147,39,143,0.8) 5.9%, rgba(234,172,232,0.8) 64%, rgba(246,219,245,0.8) 89%);
   border-radius: 0.75rem;
   border: 4px solid #9b87f5;
   overflow: hidden;

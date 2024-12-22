@@ -29,7 +29,8 @@ export const Roulette = () => {
     const randomIndex = Math.floor(Math.random() * coupons.length);
     const selectedCoupon = coupons[randomIndex];
     
-    const fullRotations = 3 + Math.floor(Math.random() * 2);
+    // Calcular a posição final considerando rotações completas
+    const fullRotations = 5 + Math.floor(Math.random() * 3); // Aumentado para mais rotações
     const finalPosition = -(fullRotations * (coupons.length * 100) + (randomIndex * 100));
     
     setSpinPosition(finalPosition);
@@ -65,7 +66,7 @@ export const Roulette = () => {
             <motion.div
               className="roulette-numbers"
               animate={{
-                x: spinPosition,
+                x: spinPosition % (coupons.length * 100), // Garante que a posição seja cíclica
               }}
               initial={{
                 x: 0,
@@ -75,17 +76,19 @@ export const Roulette = () => {
                 ease: "easeOut",
               }}
               style={{
-                width: `${coupons.length * 100 * 3}px`,
+                width: `${coupons.length * 100 * 5}px`, // Aumentado para mais repetições
               }}
             >
-              {[...coupons, ...coupons, ...coupons].map((coupon, index) => (
-                <div
-                  key={`${coupon}-${index}`}
-                  className="roulette-number"
-                >
-                  <span>{coupon}</span>
-                </div>
-              ))}
+              {[...Array(5)].flatMap((_, i) => // Repetir o array 5 vezes
+                coupons.map((coupon, index) => (
+                  <div
+                    key={`${coupon}-${i}-${index}`}
+                    className="roulette-number"
+                  >
+                    <span>{coupon}</span>
+                  </div>
+                ))
+              )}
             </motion.div>
 
             <div className="roulette-gradient-left" />
