@@ -19,7 +19,6 @@ export const Roulette = () => {
     "FRETE GRÁTIS",
   ];
 
-  // Aumentamos significativamente o número de repetições para garantir um loop contínuo
   const repetitions = 50;
   const itemWidth = 160;
   const stripWidth = prizes.length * itemWidth * repetitions;
@@ -36,12 +35,11 @@ export const Roulette = () => {
     const randomIndex = Math.floor(Math.random() * prizes.length);
     const prize = prizes[randomIndex];
 
-    // Ajustamos a lógica de rotação para garantir que sempre haja números visíveis
     const baseRotations = Math.floor(Math.random() * 2) + 3; // Entre 3 e 4 rotações completas
     const finalPosition = -(baseRotations * prizes.length * itemWidth + (randomIndex * itemWidth));
 
     await controls.start({
-      x: [0, finalPosition], // Começamos do 0 para garantir um loop suave
+      x: [0, finalPosition],
       transition: {
         duration: 5,
         ease: [0.25, 0.1, 0.25, 1],
@@ -59,7 +57,6 @@ export const Roulette = () => {
     });
   };
 
-  // Resetar a posição quando a roleta parar
   useEffect(() => {
     if (!isSpinning) {
       controls.set({ x: 0 });
@@ -75,9 +72,8 @@ export const Roulette = () => {
         </p>
 
         <div className="roulette-wheel-container">
-          <div className="roulette-pointer" />
-          
           <div className="roulette-display">
+            <div className="roulette-pointer" />
             <motion.div
               className="roulette-strip"
               animate={controls}

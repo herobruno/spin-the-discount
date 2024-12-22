@@ -34,14 +34,15 @@
 
 .roulette-pointer {
   position: absolute;
-  top: 0;
+  top: -20px; /* Ajustado para ficar mais próximo da roleta */
   left: 50%;
   transform: translateX(-50%);
   width: 0;
   height: 0;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  border-top: 30px solid #9b87f5;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 25px solid #9b87f5;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
   z-index: 10;
 }
 
