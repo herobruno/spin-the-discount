@@ -1,13 +1,7 @@
 .roulette-container {
   min-height: 100vh;
   background: linear-gradient(to bottom right, #1A1F2C, #000000);
-  padding: 1rem;
-}
-
-@media (min-width: 768px) {
-  .roulette-container {
-    padding: 2rem;
-  }
+  padding: 2rem;
 }
 
 .roulette-content {
@@ -16,17 +10,11 @@
 }
 
 .roulette-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: white;
   text-align: center;
   animation: fadeIn 0.3s ease-out;
-}
-
-@media (min-width: 768px) {
-  .roulette-title {
-    font-size: 2.5rem;
-  }
 }
 
 .roulette-subtitle {
@@ -46,7 +34,7 @@
 
 .roulette-pointer {
   position: absolute;
-  top: -20px;
+  top: -20px; /* Ajustado para ficar mais próximo da roleta */
   left: 50%;
   transform: translateX(-50%);
   width: 0;
@@ -75,41 +63,29 @@
   display: flex;
   align-items: center;
   will-change: transform;
+  transform: translateX(0);
 }
 
 .roulette-item {
   flex-shrink: 0;
-  width: 120px;
+  width: 160px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   border-right: 2px solid rgba(155, 135, 245, 0.2);
   background: linear-gradient(180deg, rgba(155, 135, 245, 0.05) 0%, rgba(155, 135, 245, 0.1) 100%);
-  padding: 0.5rem;
+  padding: 1rem;
   transition: all 0.3s ease;
 }
 
-@media (min-width: 768px) {
-  .roulette-item {
-    width: 160px;
-    padding: 1rem;
-  }
-}
-
 .roulette-item span {
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: white;
   text-align: center;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   white-space: nowrap;
-}
-
-@media (min-width: 768px) {
-  .roulette-item span {
-    font-size: 1.5rem;
-  }
 }
 
 .roulette-overlay-left,
