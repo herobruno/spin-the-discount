@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { toast } from "sonner";
+import { useIsMobile } from "@/hooks/use-mobile";
 import "./Roulette.css";
 
 export const Roulette = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState<string | null>(null);
   const controls = useAnimation();
+  const isMobile = useIsMobile();
 
   const prizes = [
     "10% OFF",
@@ -20,7 +22,6 @@ export const Roulette = () => {
   ];
 
   const repetitions = 50;
-  const isMobile = window.innerWidth < 768;
   const itemWidth = isMobile ? 120 : 160;
   const stripWidth = prizes.length * itemWidth * repetitions;
 
@@ -36,8 +37,10 @@ export const Roulette = () => {
     const randomIndex = Math.floor(Math.random() * prizes.length);
     const prize = prizes[randomIndex];
 
+    // Ajuste no cálculo da posição final para alinhar corretamente com a seta
     const baseRotations = Math.floor(Math.random() * 2) + 3;
-    const finalPosition = -(baseRotations * prizes.length * itemWidth + (randomIndex * itemWidth));
+    const offset = itemWidth / 2; // Ajuste para centralizar no item
+    const finalPosition = -(baseRotations * prizes.length * itemWidth + (randomIndex * itemWidth) + offset);
 
     await controls.start({
       x: [0, finalPosition],
