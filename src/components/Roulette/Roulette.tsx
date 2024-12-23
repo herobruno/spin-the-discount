@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { toast } from "sonner";
 import "./Roulette.css";
@@ -57,12 +57,6 @@ export const Roulette = () => {
     });
   };
 
-  useEffect(() => {
-    if (!isSpinning) {
-      controls.set({ x: 0 });
-    }
-  }, [isSpinning, controls]);
-
   return (
     <div className="roulette-container">
       <div className="roulette-content">
@@ -77,6 +71,7 @@ export const Roulette = () => {
             <motion.div
               className="roulette-strip"
               animate={controls}
+              initial={{ x: 0 }}
               style={{
                 width: stripWidth,
               }}
