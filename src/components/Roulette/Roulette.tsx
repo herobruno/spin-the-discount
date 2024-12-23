@@ -37,10 +37,9 @@ export const Roulette = () => {
     const randomIndex = Math.floor(Math.random() * prizes.length);
     const prize = prizes[randomIndex];
 
-    // Ajuste no cálculo da posição final para alinhar corretamente com a seta
     const baseRotations = Math.floor(Math.random() * 2) + 3;
-    const offset = itemWidth / 2; // Ajuste para centralizar no item
-    const finalPosition = -(baseRotations * prizes.length * itemWidth + (randomIndex * itemWidth) + offset);
+    const totalItems = prizes.length * baseRotations;
+    const finalPosition = -(totalItems * itemWidth + randomIndex * itemWidth);
 
     await controls.start({
       x: [0, finalPosition],
