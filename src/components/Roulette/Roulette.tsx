@@ -20,7 +20,8 @@ export const Roulette = () => {
   ];
 
   const repetitions = 50;
-  const itemWidth = 160;
+  const isMobile = window.innerWidth < 768;
+  const itemWidth = isMobile ? 120 : 160;
   const stripWidth = prizes.length * itemWidth * repetitions;
 
   const spin = async () => {
@@ -35,7 +36,7 @@ export const Roulette = () => {
     const randomIndex = Math.floor(Math.random() * prizes.length);
     const prize = prizes[randomIndex];
 
-    const baseRotations = Math.floor(Math.random() * 2) + 3; // Entre 3 e 4 rotações completas
+    const baseRotations = Math.floor(Math.random() * 2) + 3;
     const finalPosition = -(baseRotations * prizes.length * itemWidth + (randomIndex * itemWidth));
 
     await controls.start({
