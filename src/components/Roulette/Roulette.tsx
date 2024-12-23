@@ -39,7 +39,8 @@ export const Roulette = () => {
 
     const baseRotations = Math.floor(Math.random() * 2) + 3;
     const totalItems = prizes.length * baseRotations;
-    const finalPosition = -(totalItems * itemWidth + randomIndex * itemWidth);
+    const offset = itemWidth / 2; // Adiciona um offset para centralizar
+    const finalPosition = -(totalItems * itemWidth + randomIndex * itemWidth + offset);
 
     await controls.start({
       x: [0, finalPosition],
