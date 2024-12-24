@@ -1,33 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { toast } from "sonner";
 import { Info, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
 import "./Roulette.css";
 
 export const Roulette = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState<string | null>(null);
-  const [itemWidth, setItemWidth] = useState(160);
   const controls = useAnimation();
-  const isMobile = useIsMobile();
-
-  useEffect(() => {
-    const updateItemWidth = () => {
-      if (window.innerWidth < 768) {
-        setItemWidth(120); // Mobile
-      } else if (window.innerWidth < 1024) {
-        setItemWidth(140); // Tablet
-      } else {
-        setItemWidth(160); // Desktop
-      }
-    };
-
-    updateItemWidth();
-    window.addEventListener('resize', updateItemWidth);
-    return () => window.removeEventListener('resize', updateItemWidth);
-  }, []);
 
   const prizes = [
     "10% OFF",
@@ -41,6 +22,7 @@ export const Roulette = () => {
   ];
 
   const repetitions = 50;
+  const itemWidth = 160;
   const stripWidth = prizes.length * itemWidth * repetitions;
 
   const spin = async () => {
@@ -55,8 +37,8 @@ export const Roulette = () => {
     const randomIndex = Math.floor(Math.random() * prizes.length);
     const prize = prizes[randomIndex];
 
-    const baseRotations = 4;
-    const finalPosition = -(baseRotations * prizes.length * itemWidth + randomIndex * itemWidth);
+    const baseRotations = Math.floor(Math.random() * 2) + 3;
+    const finalPosition = -(baseRotations * prizes.length * itemWidth + (randomIndex * itemWidth));
 
     await controls.start({
       x: [0, finalPosition],
@@ -122,7 +104,6 @@ export const Roulette = () => {
                   <div
                     key={`${prize}-${index}`}
                     className="roulette-item"
-                    style={{ width: itemWidth }}
                   >
                     <span>{prize}</span>
                   </div>
