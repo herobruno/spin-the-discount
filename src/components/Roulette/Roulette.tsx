@@ -34,11 +34,16 @@ export const Roulette = () => {
     const spinSound = new Audio("/spin.mp3");
     spinSound.play();
 
+    // Garantir que o índice seja calculado de forma consistente
     const randomIndex = Math.floor(Math.random() * prizes.length);
     const prize = prizes[randomIndex];
 
-    const baseRotations = Math.floor(Math.random() * 2) + 3;
-    const finalPosition = -(baseRotations * prizes.length * ITEM_WIDTH + (randomIndex * ITEM_WIDTH));
+    // Simplificar o cálculo da posição final
+    const baseRotations = 4; // Número fixo de rotações
+    const finalPosition = -(
+      baseRotations * prizes.length * ITEM_WIDTH +
+      randomIndex * ITEM_WIDTH
+    );
 
     await controls.start({
       x: [0, finalPosition],
