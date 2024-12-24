@@ -5,7 +5,7 @@
 }
 
 .roulette-content {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -34,7 +34,7 @@
 
 .roulette-pointer {
   position: absolute;
-  top: -20px; /* Ajustado para ficar mais próximo da roleta */
+  top: -20px;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
@@ -55,6 +55,7 @@
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(8px);
+  width: 100%;
 }
 
 .roulette-strip {
@@ -68,7 +69,9 @@
 
 .roulette-item {
   flex-shrink: 0;
-  width: 160px;
+  width: 160px !important;
+  min-width: 160px !important;
+  max-width: 160px !important;
   height: 100%;
   display: flex;
   align-items: center;
