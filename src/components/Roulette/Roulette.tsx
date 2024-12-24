@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { toast } from "sonner";
+import { Info, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import "./Roulette.css";
 
 export const Roulette = () => {
@@ -35,7 +37,7 @@ export const Roulette = () => {
     const randomIndex = Math.floor(Math.random() * prizes.length);
     const prize = prizes[randomIndex];
 
-    const baseRotations = Math.floor(Math.random() * 2) + 3; // Entre 3 e 4 rotações completas
+    const baseRotations = Math.floor(Math.random() * 2) + 3;
     const finalPosition = -(baseRotations * prizes.length * itemWidth + (randomIndex * itemWidth));
 
     await controls.start({
@@ -57,9 +59,28 @@ export const Roulette = () => {
     });
   };
 
+  const handleBack = () => {
+    window.history.back();
+  };
+
   return (
     <div className="roulette-container">
       <div className="roulette-content">
+        <div className="flex justify-between items-center mb-6">
+          <Button 
+            variant="ghost" 
+            className="text-white hover:text-white hover:bg-roulette-primary/20"
+            onClick={handleBack}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Voltar
+          </Button>
+          <div className="flex items-center gap-2 text-white">
+            <Info className="h-4 w-4 text-roulette-primary" />
+            <span>Chances restantes: <strong>4</strong></span>
+          </div>
+        </div>
+
         <h1 className="roulette-title">Roleta de Cupons</h1>
         <p className="roulette-subtitle">
           Gire e ganhe descontos exclusivos!
