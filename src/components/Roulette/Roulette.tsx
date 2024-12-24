@@ -1,14 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { toast } from "sonner";
 import { Info, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 import "./Roulette.css";
 
 export const Roulette = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState<string | null>(null);
+  const [itemWidth, setItemWidth] = useState(160);
   const controls = useAnimation();
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const updateItemWidth = () => {
+      if (window.innerWidth < 768) {
+        setItemWidth(120); // Mobile
+      } else if (window.innerWidth < 1024) {
+        setItemWidth(140); // Tablet
+      } else {
+        setItemWidth(160); // Desktop
+      }
+    };
+
+    updateItemWidth();
+    window.addEventListener('resize', updateItemWidth);
+    return () => window.removeEventListener('resize', updateItemWidth);
+  }, []);
 
   const prizes = [
     "10% OFF",
@@ -22,8 +41,7 @@ export const Roulette = () => {
   ];
 
   const repetitions = 50;
-  const ITEM_WIDTH = 160;
-  const stripWidth = prizes.length * ITEM_WIDTH * repetitions;
+  const stripWidth = prizes.length * itemWidth * repetitions;
 
   const spin = async () => {
     if (isSpinning) return;
@@ -34,16 +52,11 @@ export const Roulette = () => {
     const spinSound = new Audio("/spin.mp3");
     spinSound.play();
 
-    // Garantir que o índice seja calculado de forma consistente
     const randomIndex = Math.floor(Math.random() * prizes.length);
     const prize = prizes[randomIndex];
 
-    // Simplificar o cálculo da posição final
-    const baseRotations = 4; // Número fixo de rotações
-    const finalPosition = -(
-      baseRotations * prizes.length * ITEM_WIDTH +
-      randomIndex * ITEM_WIDTH
-    );
+    const baseRotations = 4;
+    const finalPosition = -(baseRotations * prizes.length * itemWidth + randomIndex * itemWidth);
 
     await controls.start({
       x: [0, finalPosition],
@@ -109,7 +122,7 @@ export const Roulette = () => {
                   <div
                     key={`${prize}-${index}`}
                     className="roulette-item"
-                    style={{ width: ITEM_WIDTH }}
+                    style={{ width: itemWidth }}
                   >
                     <span>{prize}</span>
                   </div>

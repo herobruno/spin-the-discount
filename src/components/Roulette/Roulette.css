@@ -65,9 +65,10 @@
   will-change: transform;
 }
 
+/* Tamanhos base para mobile */
 .roulette-item {
   flex: none;
-  width: 160px;
+  width: 120px; /* Tamanho base para mobile */
   height: 100%;
   display: flex;
   align-items: center;
@@ -79,12 +80,34 @@
 }
 
 .roulette-item span {
-  font-size: 1.5rem;
+  font-size: 1.25rem; /* Tamanho de fonte menor para mobile */
   font-weight: bold;
   color: white;
   text-align: center;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   white-space: nowrap;
+}
+
+/* Tablet (768px e acima) */
+@media (min-width: 768px) {
+  .roulette-item {
+    width: 140px;
+  }
+
+  .roulette-item span {
+    font-size: 1.35rem;
+  }
+}
+
+/* Desktop (1024px e acima) */
+@media (min-width: 1024px) {
+  .roulette-item {
+    width: 160px;
+  }
+
+  .roulette-item span {
+    font-size: 1.5rem;
+  }
 }
 
 .roulette-overlay-left,
