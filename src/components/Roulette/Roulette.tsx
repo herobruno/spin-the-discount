@@ -22,8 +22,8 @@ export const Roulette = () => {
   ];
 
   const repetitions = 50;
-  const itemWidth = 160;
-  const stripWidth = prizes.length * itemWidth * repetitions;
+  const ITEM_WIDTH = 160;
+  const stripWidth = prizes.length * ITEM_WIDTH * repetitions;
 
   const spin = async () => {
     if (isSpinning) return;
@@ -38,7 +38,7 @@ export const Roulette = () => {
     const prize = prizes[randomIndex];
 
     const baseRotations = Math.floor(Math.random() * 2) + 3;
-    const finalPosition = -(baseRotations * prizes.length * itemWidth + (randomIndex * itemWidth));
+    const finalPosition = -(baseRotations * prizes.length * ITEM_WIDTH + (randomIndex * ITEM_WIDTH));
 
     await controls.start({
       x: [0, finalPosition],
@@ -104,6 +104,7 @@ export const Roulette = () => {
                   <div
                     key={`${prize}-${index}`}
                     className="roulette-item"
+                    style={{ width: ITEM_WIDTH }}
                   >
                     <span>{prize}</span>
                   </div>

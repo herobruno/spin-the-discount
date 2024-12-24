@@ -55,7 +55,6 @@
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(8px);
-  width: 100%;
 }
 
 .roulette-strip {
@@ -68,10 +67,8 @@
 }
 
 .roulette-item {
-  flex-shrink: 0;
-  width: 160px !important;
-  min-width: 160px !important;
-  max-width: 160px !important;
+  flex: 0 0 160px;
+  width: 160px;
   height: 100%;
   display: flex;
   align-items: center;
